@@ -14,7 +14,7 @@
     
     <mvc:annotation-driven />
     
-    <context:component-scan base-package="com.funcart.controller" />
+    <context:component-scan base-package="com.funcart.*" />
     
 	<bean id ="viewResolver" class = "org.springframework.web.servlet.view.InternalResourceViewResolver">
       <property name = "prefix" value = "/WEB-INF/jspPages/" />
