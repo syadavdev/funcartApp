@@ -12,9 +12,12 @@ import com.funcart.customer.Customer;
 @Component
 public class CustomerDao {
 	
+	private EntityManagerFactory emf;
+	private EntityManager em;
+	
 	public boolean insertCustomer(Customer customer){
-		EntityManagerFactory emf = Persistence.createEntityManagerFactory("signupUnit");
-		EntityManager em = emf.createEntityManager();
+		emf = Persistence.createEntityManagerFactory("signupUnit");
+		em = emf.createEntityManager();
 		EntityTransaction tx = em.getTransaction();
 		boolean flag = true;
 		try{

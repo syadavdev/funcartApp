@@ -30,13 +30,23 @@ public class CustomerController {
 	}
 
 	@RequestMapping(value = "/loginDetail",method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public void insertLoginDetail(@RequestBody Customer customer){
+	public boolean insertLoginDetail(@RequestBody Customer customer){
+		boolean flag = true;
+		if(customerDao.checkingCustomer(customer))
 		
+		return flag;
 	}
 	
 	@RequestMapping(value = "/signupDetail",method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public void insertSignupDetail(@RequestBody Customer customer){
-		if(customerDao.insertCustomer(customer))
-			System.out.println("successfully inserted");
+	public boolean insertSignupDetail(@RequestBody Customer customer){
+		boolean flag = true;
+		if(customer.checkSignupDetail()){
+			if(customerDao.insertCustomer(customer))
+				flag = true;
+		}
+		else{
+			flag = false;
+		}
+		return flag;
 	}
 }
