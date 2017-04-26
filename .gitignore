@@ -1,4 +1,11 @@
 *.class
+.settings
+funcartApp
+funcart
+target
+.classpath
+LICENSE
+.project
 
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
