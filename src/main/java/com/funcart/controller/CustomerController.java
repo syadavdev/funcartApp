@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.funcart.Dao.CustomerDao;
-import com.funcart.customer.Customer;
+import com.funcart.domain.Customer;
 
 @RestController
 public class CustomerController {
@@ -29,20 +29,22 @@ public class CustomerController {
 		return mv;
 	}
 
-	@RequestMapping(value = "/loginDetail",method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public boolean insertLoginDetail(@RequestBody Customer customer){
+	@RequestMapping(value = "/loginDetail",method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE)
+	public boolean checkLoginDetail(@RequestBody Customer customer){
 		boolean flag = true;
 		if(customerDao.checkingCustomer(customer))
-		
+			flag = true;
+		else
+			flag = false;
 		return flag;
 	}
 	
-	@RequestMapping(value = "/signupDetail",method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public boolean insertSignupDetail(@RequestBody Customer customer){
+	@RequestMapping(value = "/signupDetail",method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE)
+	public boolean insertSignupDetail(@RequestBody Customer customer) throws Exception{
 		boolean flag = true;
 		if(customer.checkSignupDetail()){
 			if(customerDao.insertCustomer(customer))
-				flag = true;
+					flag = true;
 		}
 		else{
 			flag = false;

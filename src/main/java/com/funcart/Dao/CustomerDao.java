@@ -1,43 +1,37 @@
 package com.funcart.Dao;
 
+import java.util.List;
+
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
-import javax.persistence.Persistence;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import javax.transaction.Transactional;
 
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
-import com.funcart.customer.Customer;
+import com.funcart.domain.Customer;
 
-@Component
+@Repository
 public class CustomerDao {
-	
-	private EntityManagerFactory emf;
+
+	@PersistenceContext
 	private EntityManager em;
-	
-	public boolean insertCustomer(Customer customer){
-		emf = Persistence.createEntityManagerFactory("signupUnit");
-		em = emf.createEntityManager();
-		EntityTransaction tx = em.getTransaction();
-		boolean flag = true;
-		try{
-			tx.begin();
-			em.persist(customer);
-			em.flush();
-			tx.commit();
-		}catch(Exception e){
-			e.printStackTrace();
-			tx.rollback();
-			flag = false;
-		}finally{
-			em.close();
-		}
-		return flag;
-	}
-	
-	public boolean checkingCustomer(Customer customer){
-		
+
+	@Transactional(rollbackOn=Exception.class)
+	public boolean insertCustomer(Customer customer)throws Exception{
+		em.persist(customer);
 		return true;
 	}
 
+	public boolean checkingCustomer(Customer customer){
+		
+		boolean flag = true;
+		Query q = em.createQuery("from Customer u where u.username=:name and u.password=:pwd");
+		q.setParameter("name",customer.getUsername());
+		q.setParameter("pwd",customer.getPassword()); 
+       	Customer returnCustomer =(Customer) q.getSingleResult();
+       	if(returnCustomer == null)
+       		flag = false;
+       	return flag;
+	}
 }
